@@ -1,0 +1,67 @@
+{
+  "name": "strapi-plugin-content-manager",
+  "version": "3.0.0-alpha.5.3",
+  "description": "A powerful UI to easily manage your data.",
+  "engines": {
+    "node": ">= 8.0.0",
+    "npm": ">= 5.3.0"
+  },
+  "author": {
+    "email": "hi@strapi.io",
+    "name": "Strapi team",
+    "url": "http://strapi.io"
+  },
+  "maintainers": [
+    {
+      "name": "Strapi team",
+      "email": "hi@strapi.io",
+      "url": "http://strapi.io"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/strapi/strapi.git"
+  },
+  "license": "MIT",
+  "strapi": {
+    "name": "Content Manager",
+    "icon": "plug"
+  },
+  "scripts": {
+    "analyze:clean": "rimraf stats.json",
+    "preanalyze": "npm run analyze:clean",
+    "analyze": "node node_modules/strapi-helper-plugin/lib/internals/scripts/analyze.js",
+    "prebuild": "npm run build:clean && npm run test",
+    "build": "cross-env NODE_ENV=production webpack --config node_modules/strapi-helper-plugin/lib/internals/webpack/webpack.prod.babel.js --color -p --progress",
+    "build:clean": "rimraf admin/build",
+    "start": "cross-env NODE_ENV=development node node_modules/strapi-helper-plugin/lib/server",
+    "generate": "node_modules/plop/plop.js --plopfile node_modules/strapi-helper-plugin/lib/internals/generators/index.js",
+    "lint": "eslint --ignore-path .gitignore --config node_modules/strapi-helper-plugin/lib/internals/eslint/.eslintrc.json admin",
+    "pretest": "npm run lint",
+    "prettier": "prettier --single-quote --trailing-comma es5 --write \"{admin,__{tests,mocks}__}/**/*.js\"",
+    "test": "echo Tests are not implemented.",
+    "prepublish": "npm run build",
+    "postinstall": "node node_modules/strapi-helper-plugin/lib/internals/scripts/postinstall.js"
+  },
+  "dependencies": {
+    "react-select": "^1.0.0-rc.5"
+  },
+  "devDependencies": {
+    "cross-env": "^3.1.3",
+    "eslint": "^3.9.0",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-config-airbnb-base": "^9.0.0",
+    "eslint-config-prettier": "^2.3.0",
+    "eslint-import-resolver-webpack": "^0.6.0",
+    "eslint-plugin-babel": "^4.1.2",
+    "eslint-plugin-import": "^2.0.1",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.4.1",
+    "eslint-plugin-redux-saga": "^0.1.5",
+    "plop": "^1.5.0",
+    "prettier": "^1.5.3",
+    "rimraf": "^2.5.4",
+    "strapi-helper-plugin": "^3.0.0-alpha.5.3",
+    "webpack": "^2.1.0-beta.25"
+  }
+}

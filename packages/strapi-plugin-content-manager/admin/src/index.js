@@ -1,7 +1,6 @@
 import pluginPkg from '../../package.json';
-import layout from '../../config/layout';
 import pluginId from './pluginId';
-import App from './containers/App';
+import App from './containers/Main';
 import Initializer from './containers/Initializer';
 import lifecycles from './lifecycles';
 import trads from './translations';
@@ -9,7 +8,6 @@ import trads from './translations';
 export default strapi => {
   const pluginDescription =
     pluginPkg.strapi.description || pluginPkg.description;
-
   const plugin = {
     blockerComponent: null,
     blockerComponentProps: {},
@@ -18,15 +16,16 @@ export default strapi => {
     id: pluginId,
     initializer: Initializer,
     injectedComponents: [],
-    layout,
+    isReady: false,
+    layout: null,
     lifecycles,
     leftMenuLinks: [],
     leftMenuSections: [],
     mainComponent: App,
     name: pluginPkg.strapi.name,
     preventComponentRendering: false,
-    suffixUrl: () => '/roles',
-    suffixUrlToReplaceForLeftMenuHighlight: '/roles',
+    suffixUrl: () => '/ctm-configurations/models',
+    suffixUrlToReplaceForLeftMenuHighlight: '/models',
     trads,
   };
 

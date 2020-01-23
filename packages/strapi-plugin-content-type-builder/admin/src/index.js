@@ -1,15 +1,15 @@
 import pluginPkg from '../../package.json';
-import layout from '../../config/layout';
-import pluginId from './pluginId';
 import App from './containers/App';
 import Initializer from './containers/Initializer';
+import Link from './InjectedComponents/ContentManager/EditViewLink';
+import Button from './InjectedComponents/ContentManager/EditSettingViewButton';
 import lifecycles from './lifecycles';
 import trads from './translations';
+import pluginId from './pluginId';
 
 export default strapi => {
   const pluginDescription =
     pluginPkg.strapi.description || pluginPkg.description;
-
   const plugin = {
     blockerComponent: null,
     blockerComponentProps: {},
@@ -17,16 +17,33 @@ export default strapi => {
     icon: pluginPkg.strapi.icon,
     id: pluginId,
     initializer: Initializer,
-    injectedComponents: [],
-    layout,
+    injectedComponents: [
+      {
+        plugin: 'content-manager.editView',
+        area: 'right.links',
+        component: Link,
+        key: 'content-type-builder.link',
+        props: {
+          message: {
+            id: 'content-manager.containers.Edit.Link.Fields',
+          },
+          icon: 'fa-cog',
+        },
+      },
+      {
+        plugin: 'content-manager.editSettingsView',
+        area: 'left.links',
+        component: Button,
+        key: 'content-type-builder.form',
+      },
+    ],
+    layout: null,
     lifecycles,
     leftMenuLinks: [],
     leftMenuSections: [],
     mainComponent: App,
     name: pluginPkg.strapi.name,
     preventComponentRendering: false,
-    suffixUrl: () => '/roles',
-    suffixUrlToReplaceForLeftMenuHighlight: '/roles',
     trads,
   };
 

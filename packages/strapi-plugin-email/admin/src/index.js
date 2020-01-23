@@ -1,5 +1,4 @@
 import pluginPkg from '../../package.json';
-import layout from '../../config/layout';
 import pluginId from './pluginId';
 import App from './containers/App';
 import Initializer from './containers/Initializer';
@@ -18,15 +17,13 @@ export default strapi => {
     id: pluginId,
     initializer: Initializer,
     injectedComponents: [],
-    layout,
+    layout: null,
     lifecycles,
     leftMenuLinks: [],
     leftMenuSections: [],
     mainComponent: App,
     name: pluginPkg.strapi.name,
     preventComponentRendering: false,
-    suffixUrl: () => '/roles',
-    suffixUrlToReplaceForLeftMenuHighlight: '/roles',
     trads,
   };
 

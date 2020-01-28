@@ -3,9 +3,9 @@ import { Router, Route, Switch } from 'react-router-dom';
 import { render, cleanup } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { GlobalContextProvider } from 'strapi-helper-plugin';
-import { IntlProvider } from 'react-intl';
+import { IntlProvider, defineMessages } from 'react-intl';
 
-import { translationMessages } from '../../../../i18n';
+import translationMessages from '../../../../translations/en.json';
 
 import EditView from '../index';
 
@@ -18,15 +18,29 @@ describe('Admin | containers | EditView', () => {
     const intlProvider = new IntlProvider(
       {
         locale: 'en',
-        messages: translationMessages.en,
+        messages: translationMessages,
       },
       {}
     );
     const { intl: originalIntl } = intlProvider.getChildContext();
 
+    const intl = {
+      ...originalIntl,
+      formatMessage: ({ id, defaultMessage }) => {
+        return originalIntl.formatMessage({
+          id,
+          defaultMessage: defaultMessage || id,
+        });
+      },
+    };
+
     const { asFragment } = render(
-      <IntlProvider locale={intlProvider.locale}>
-        <GlobalContextProvider formatMessage={originalIntl.formatMessage}>
+      <IntlProvider
+        locale="en"
+        defaultLocale="en"
+        messages={defineMessages(translationMessages)}
+      >
+        <GlobalContextProvider formatMessage={intl.formatMessage}>
           <Router history={history}>
             <Switch>
               <Route>

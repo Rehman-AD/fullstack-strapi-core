@@ -1,0 +1,10 @@
+**/node_modules/**
+**/build/**
+**/dist/**
+testApp/**
+packages/strapi-generate-plugin/files/admin/src/**
+packages/strapi-helper-plugin/**
+packages/strapi-plugin-users-permissions/admin/**
+.eslintrc.js
+.eslintrc.front.js
+.eslintrc.back.js

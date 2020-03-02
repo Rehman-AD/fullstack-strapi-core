@@ -1,4 +1,4 @@
-# strapi-provider-upload-cloudinary
+# strapi-provider-upload-local
 
 ## Configurations
 
@@ -12,12 +12,12 @@ Your configuration is passed down to the cloudinary configuration. (e.g: `cloudi
 {
   "provider": "cloudinary",
   "providerOptions": {
-    "cloud_name": "cloud-name",
-    "api_key": "api-key",
-    "api_secret": "api-secret"
+    "sizeLimit": 100000
   }
 }
 ```
+
+The `sizeLimit` parameter must be a number. Be aware that the unit is in KB.
 
 ## Resources
 

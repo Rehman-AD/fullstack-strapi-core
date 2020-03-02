@@ -1,16 +1,15 @@
 const _ = require('lodash');
-const { ApolloError } = require('apollo-server-koa');
 
 /**
-* Throws an ApolloError if context body contains a bad request
-* @param contextBody - body of the context object given to the resolver
-* @throws ApolloError if the body is a bad request
-*/
+ * Throws an ApolloError if context body contains a bad request
+ * @param contextBody - body of the context object given to the resolver
+ * @throws ApolloError if the body is a bad request
+ */
 function checkBadRequest(contextBody) {
   if (_.get(contextBody, 'output.payload.statusCode', 200) !== 200) {
     const statusCode = _.get(contextBody, 'output.payload.statusCode', 400);
     const message = _.get(contextBody, 'output.payload.message', 'Bad Request');
-    throw new ApolloError(message, statusCode, _.omit(contextBody, ['output']));
+    throw new Error(message, statusCode, _.omit(contextBody, ['output']));
   }
 }
 
@@ -18,7 +17,7 @@ module.exports = {
   type: {
     UsersPermissionsPermission: false, // Make this type NOT queriable.
   },
-  definition: `
+  definition: /* GraphQL */ `
     type UsersPermissionsMe {
       id: ID!
       username: String!
@@ -56,35 +55,25 @@ module.exports = {
   resolver: {
     Query: {
       me: {
-        resolverOf: 'User.me',
-        resolver: {
-          plugin: 'users-permissions',
-          handler: 'User.me',
-        },
+        resolver: 'plugins::users-permissions.user.me',
       },
       role: {
-        plugin: 'users-permissions',
-        resolverOf: 'UsersPermissions.getRole',
+        resolverOf: 'plugins::users-permissions.userspermissions.getRole',
         resolver: async (obj, options, { context }) => {
-          context.params = {...context.params, ...options.input};
+          context.params = { ...context.params, ...options.input };
 
-          await strapi.plugins[
-            'users-permissions'
-          ].controllers.userspermissions.getRole(context);
+          await strapi.plugins['users-permissions'].controllers.userspermissions.getRole(context);
 
           return context.body.role;
         },
       },
       roles: {
         description: `Retrieve all the existing roles. You can't apply filters on this query.`,
-        plugin: 'users-permissions',
-        resolverOf: 'UsersPermissions.getRoles', // Apply the `getRoles` permissions on the resolver.
+        resolverOf: 'plugins::users-permissions.userspermissions.getRoles', // Apply the `getRoles` permissions on the resolver.
         resolver: async (obj, options, { context }) => {
-          context.params = {...context.params, ...options.input};
+          context.params = { ...context.params, ...options.input };
 
-          await strapi.plugins[
-            'users-permissions'
-          ].controllers.userspermissions.getRoles(context);
+          await strapi.plugins['users-permissions'].controllers.userspermissions.getRoles(context);
 
           return context.body.roles;
         },
@@ -93,24 +82,20 @@ module.exports = {
     Mutation: {
       createRole: {
         description: 'Create a new role',
-        plugin: 'users-permissions',
-        resolverOf: 'UsersPermissions.createRole',
+        resolverOf: 'plugins::users-permissions.userspermissions.createRole',
         resolver: async (obj, options, { context }) => {
-          await strapi.plugins[
-            'users-permissions'
-          ].controllers.userspermissions.createRole(context);
+          await strapi.plugins['users-permissions'].controllers.userspermissions.createRole(
+            context
+          );
 
           return { ok: true };
         },
       },
       updateRole: {
         description: 'Update an existing role',
-        plugin: 'users-permissions',
-        resolverOf: 'UsersPermissions.updateRole',
+        resolverOf: 'plugins::users-permissions.userspermissions.updateRole',
         resolver: async (obj, options, { context }) => {
-          await strapi.plugins[
-            'users-permissions'
-          ].controllers.userspermissions.updateRole(
+          await strapi.plugins['users-permissions'].controllers.userspermissions.updateRole(
             context.params,
             context.body
           );
@@ -120,27 +105,23 @@ module.exports = {
       },
       deleteRole: {
         description: 'Delete an existing role',
-        plugin: 'users-permissions',
-        resolverOf: 'UsersPermissions.deleteRole',
+        resolverOf: 'plugins::users-permissions.userspermissions.deleteRole',
         resolver: async (obj, options, { context }) => {
-          await strapi.plugins[
-            'users-permissions'
-          ].controllers.userspermissions.deleteRole(context);
+          await strapi.plugins['users-permissions'].controllers.userspermissions.deleteRole(
+            context
+          );
 
           return { ok: true };
         },
       },
       createUser: {
         description: 'Create a new user',
-        plugin: 'users-permissions',
-        resolverOf: 'User.create',
+        resolverOf: 'plugins::users-permissions.user.create',
         resolver: async (obj, options, { context }) => {
           context.params = _.toPlainObject(options.input.where);
           context.request.body = _.toPlainObject(options.input.data);
 
-          await strapi.plugins['users-permissions'].controllers.user.create(
-            context
-          );
+          await strapi.plugins['users-permissions'].controllers.user.create(context);
 
           return {
             user: context.body.toJSON ? context.body.toJSON() : context.body,
@@ -149,15 +130,12 @@ module.exports = {
       },
       updateUser: {
         description: 'Update an existing user',
-        plugin: 'users-permissions',
-        resolverOf: 'User.update',
+        resolverOf: 'plugins::users-permissions.user.update',
         resolver: async (obj, options, { context }) => {
           context.params = _.toPlainObject(options.input.where);
           context.request.body = _.toPlainObject(options.input.data);
 
-          await strapi.plugins['users-permissions'].controllers.user.update(
-            context
-          );
+          await strapi.plugins['users-permissions'].controllers.user.update(context);
 
           return {
             user: context.body.toJSON ? context.body.toJSON() : context.body,
@@ -166,8 +144,7 @@ module.exports = {
       },
       deleteUser: {
         description: 'Delete an existing user',
-        plugin: 'users-permissions',
-        resolverOf: 'User.destroy',
+        resolverOf: 'plugins::users-permissions.user.destroy',
         resolver: async (obj, options, { context }) => {
           // Set parameters to context.
           context.params = _.toPlainObject(options.input.where);
@@ -175,29 +152,22 @@ module.exports = {
 
           // Retrieve user to be able to return it because
           // Bookshelf doesn't return the row once deleted.
-          await strapi.plugins['users-permissions'].controllers.user.findOne(
-            context
-          );
+          await strapi.plugins['users-permissions'].controllers.user.findOne(context);
           // Assign result to user.
-          const user = context.body.toJSON
-            ? context.body.toJSON()
-            : context.body;
+          const user = context.body.toJSON ? context.body.toJSON() : context.body;
 
           // Run destroy query.
-          await strapi.plugins['users-permissions'].controllers.user.destroy(
-            context
-          );
+          await strapi.plugins['users-permissions'].controllers.user.destroy(context);
 
           return {
             user,
           };
-        }
+        },
       },
       register: {
         description: 'Register a user',
-        plugin: 'users-permissions',
-        resolverOf: 'Auth.register',
-        resolver: async (obj, options, {context}) => {
+        resolverOf: 'plugins::users-permissions.auth.register',
+        resolver: async (obj, options, { context }) => {
           context.request.body = _.toPlainObject(options.input);
 
           await strapi.plugins['users-permissions'].controllers.auth.register(context);
@@ -205,15 +175,18 @@ module.exports = {
 
           checkBadRequest(output);
           return {
-            user: output.user || output, jwt: output.jwt
+            user: output.user || output,
+            jwt: output.jwt,
           };
-        }
+        },
       },
       login: {
-        resolverOf: 'Auth.callback',
-        plugin: 'users-permissions',
-        resolver: async (obj, options, {context}) => {
-          context.params = {...context.params, provider: options.input.provider};
+        resolverOf: 'plugins::users-permissions.auth.callback',
+        resolver: async (obj, options, { context }) => {
+          context.params = {
+            ...context.params,
+            provider: options.input.provider,
+          };
           context.request.body = _.toPlainObject(options.input);
 
           await strapi.plugins['users-permissions'].controllers.auth.callback(context);
@@ -221,10 +194,11 @@ module.exports = {
 
           checkBadRequest(output);
           return {
-            user: output.user || output, jwt: output.jwt
+            user: output.user || output,
+            jwt: output.jwt,
           };
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 };

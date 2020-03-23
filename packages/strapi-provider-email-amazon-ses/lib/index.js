@@ -7,36 +7,49 @@
 /* eslint-disable prefer-template */
 // Public node modules.
 const _ = require('lodash');
-const sendgrid = require('@sendgrid/mail');
+const nodeSES = require('node-ses');
 
 /* eslint-disable no-unused-vars */
 module.exports = {
-  provider: 'sendgrid',
-  name: 'Sendgrid',
+  provider: 'amazon-ses',
+  name: 'Amazon SES',
   auth: {
-    sendgrid_default_from: {
-      label: 'Sendgrid Default From',
+    amazon_ses_default_from: {
+      label: 'Default From',
       type: 'text',
     },
-    sendgrid_default_replyto: {
-      label: 'Sendgrid Default Reply-To',
+    amazon_ses_default_replyto: {
+      label: 'Default Reply-To',
       type: 'text',
     },
-    sendgrid_api_key: {
-      label: 'Sendgrid API Key',
+    amazon_ses_api_key: {
+      label: 'Amazon Access key ID',
+      type: 'text',
+    },
+    amazon_ses_secret: {
+      label: 'Amazon Secret access key',
+      type: 'text',
+    },
+    amazon_ses_endpoint: {
+      label: 'Amazon end-point uri',
       type: 'text',
     },
   },
+
   init: config => {
-    sendgrid.setApiKey(config.sendgrid_api_key);
+    var client = nodeSES.createClient({
+      key: config.amazon_ses_api_key,
+      secret: config.amazon_ses_secret,
+      amazon: config.amazon_ses_endpoint,
+    });
 
     return {
       send: options => {
         return new Promise((resolve, reject) => {
           // Default values.
           options = _.isObject(options) ? options : {};
-          options.from = options.from || config.sendgrid_default_from;
-          options.replyTo = options.replyTo || config.sendgrid_default_replyto;
+          options.from = options.from || config.amazon_ses_default_from;
+          options.replyTo = options.replyTo || config.amazon_ses_default_replyto;
           options.text = options.text || options.html;
           options.html = options.html || options.text;
 
@@ -45,15 +58,11 @@ module.exports = {
             to: options.to,
             replyTo: options.replyTo,
             subject: options.subject,
-            text: options.text,
-            html: options.html,
-            templateId: options.templateId,
-            dynamic_template_data: options.dynamic_template_data,
-            sendAt: options.sendAt,
-            batchId: options.batchId,
+            altText: options.text,
+            message: options.html,
           };
 
-          sendgrid.send(msg, function(err) {
+          client.sendEmail(msg, function(err) {
             if (err) {
               reject([{ messages: [{ id: 'Auth.form.error.email.invalid' }] }]);
             } else {

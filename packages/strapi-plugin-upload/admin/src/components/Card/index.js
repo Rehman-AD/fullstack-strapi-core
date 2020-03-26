@@ -1,17 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { formatBytes, getExtension, getType } from '../../utils';
 
 import Flex from '../Flex';
 import Text from '../Text';
+import Border from '../CardBorder';
 import CardImgWrapper from '../CardImgWrapper';
 import CardPreview from '../CardPreview';
+import ErrorMessage from '../CardErrorMessage';
+import Title from '../CardTitle';
 import Tag from '../Tag';
-import Wrapper from './Wrapper';
-import Title from './Title';
-import ErrorMessage from './ErrorMessage';
-import Border from './Border';
+import Wrapper from '../CardWrapper';
 
 const Card = ({
   id,

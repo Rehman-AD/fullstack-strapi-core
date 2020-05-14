@@ -1,4 +1,4 @@
-# strapi-provider-email-mailgun
+# strapi-provider-email-sendgrid
 
 ## Resources
 
@@ -18,10 +18,10 @@ You need to have the plugin `strapi-plugin-email` installed in you Strapi projec
 
 ```bash
 # using yarn
-yarn add strapi-provider-email-mailgun
+yarn add strapi-provider-email-sendgrid
 
 # using npm
-npm install strapi-provider-email-mailgun --save
+npm install strapi-provider-email-sendgrid --save
 ```
 
 ## Configuration
@@ -29,12 +29,10 @@ npm install strapi-provider-email-mailgun --save
 | Variable       | Type                    | Description                                    | Required | Default   |
 | -------------- | ----------------------- | ---------------------------------------------- | -------- | --------- |
 | name           | string                  | The name of the provider you use               | yes      |           |
-| apiKey         | string                  | Api key given by Mailgun                       | yes      |           |
+| apiKey         | string                  | Api key given by Sendgrid                      | yes      |           |
 | enabled        | boolean                 | Enable the possibility to send emails          | no       | true      |
 | defaultFrom    | string                  | Sender mail address                            | no       | undefined |
 | defaultReplyTo | string \| array<string> | Address or addresses the receiver can reply to | no       | undefined |
-| host           | string                  |                                                |          |           |
-| domain         | string                  |                                                |          |           |
 
 ### Example
 
@@ -44,8 +42,8 @@ npm install strapi-provider-email-mailgun --save
 module.exports = ({ env }) => ({
   // ...
   email: {
-    name: 'mailgun',
-    apiKey: env('MAILGUN_API_KEY'),
+    name: 'sendgrid',
+    apiKey: env('SENDGRID_API_KEY'),
     defaultFrom: 'myemail@protonmail.com',
     defaultReplyTo: 'myemail@protonmail.com',
   },

@@ -1,0 +1,7 @@
+{
+  "parser": {
+    "enabled": true,
+    "multipart": true,
+    "parsedMethods": ["POST", "PUT", "PATCH", "DELETE"]
+  }
+}

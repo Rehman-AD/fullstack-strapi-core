@@ -14,7 +14,7 @@ const PermissionsHeader = ({ allAttributes, contentTypes }) => {
     onSetAttributesPermissions,
     onGlobalPermissionsActionSelect,
     permissionsLayout,
-    permissions,
+    contentTypesPermissions,
   } = usePermissionsContext();
 
   const handleCheck = action => {
@@ -37,12 +37,12 @@ const PermissionsHeader = ({ allAttributes, contentTypes }) => {
     }
   };
 
-  // Get the count of content type permissions by action.
+  // Get the count of content type contentTypesPermissions by action.
   const countContentTypesActionPermissions = useCallback(
     action => {
-      return getContentTypesActionsSize(contentTypes, permissions, action);
+      return getContentTypesActionsSize(contentTypes, contentTypesPermissions, action);
     },
-    [contentTypes, permissions]
+    [contentTypes, contentTypesPermissions]
   );
 
   const hasSomeActions = action => {

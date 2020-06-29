@@ -17,11 +17,7 @@ const Border = styled.div`
 `;
 
 const SubCategory = ({ subCategory }) => {
-  const {
-    pluginsAndSettingsPermissions,
-    onPluginSettingPermission,
-    onPluginSettingSubCategoryPermission,
-  } = usePermissionsContext();
+  const { pluginsAndSettingsPermissions } = usePermissionsContext();
 
   const checkPermission = useCallback(
     action => {
@@ -31,10 +27,6 @@ const SubCategory = ({ subCategory }) => {
     },
     [pluginsAndSettingsPermissions]
   );
-
-  const handlePermission = action => {
-    onPluginSettingPermission(action);
-  };
 
   const hasAllCategoryActions = useMemo(() => {
     return (
@@ -56,15 +48,8 @@ const SubCategory = ({ subCategory }) => {
     return numberOfCurrentActions > 0 && numberOfCurrentActions < subCategory.actions.length;
   }, [pluginsAndSettingsPermissions, subCategory]);
 
-  const handleSubCategoryPermissions = () => {
-    onPluginSettingSubCategoryPermission({
-      actions: subCategory.actions,
-      shouldEnable: !hasAllCategoryActions,
-    });
-  };
-
   return (
-    <SubCategoryWrapper>
+    <SubCategoryWrapper disabled>
       <Flex justifyContent="space-between" alignItems="center">
         <Padded right size="sm">
           <Text
@@ -81,9 +66,9 @@ const SubCategory = ({ subCategory }) => {
         <Padded left size="sm">
           <BaselineAlignment />
           <Checkbox
+            disabled
             name={`select-all-${subCategory.subCategory}`}
             message="Select all"
-            onChange={handleSubCategoryPermissions}
             someChecked={hasSomeCategoryActions}
             value={hasAllCategoryActions}
           />
@@ -95,10 +80,10 @@ const SubCategory = ({ subCategory }) => {
           {subCategory.actions.map(sc => (
             <CheckboxWrapper key={sc.action}>
               <Checkbox
+                disabled
                 value={checkPermission(sc.action)}
                 name={sc.action}
                 message={sc.displayName}
-                onChange={() => handlePermission(sc.action)}
               />
             </CheckboxWrapper>
           ))}

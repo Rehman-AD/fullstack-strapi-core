@@ -1,5 +1,4 @@
 import produce from 'immer';
-import { sortBy } from 'lodash';
 
 const initialState = {
   isLoading: true,

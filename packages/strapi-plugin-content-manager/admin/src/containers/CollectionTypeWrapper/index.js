@@ -8,6 +8,7 @@ import pluginId from '../../pluginId';
 import { getRequestUrl } from './utils';
 import reducer, { initialState } from './reducer';
 
+// This container is used to handle the data fetching management part
 const CollectionTypeWrapper = ({ allLayoutData, children, slug }) => {
   const { emitEvent } = useGlobalContext();
   const { push, replace } = useHistory();

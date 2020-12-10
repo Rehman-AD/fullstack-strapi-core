@@ -8,7 +8,6 @@ const Arrow = styled(({ isUp, ...rest }) => <Carret {...rest} />)`
     isUp &&
     `
     transform: rotateZ(180deg);
-
   `}
 `;
 

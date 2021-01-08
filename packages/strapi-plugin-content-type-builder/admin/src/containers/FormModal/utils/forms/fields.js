@@ -1,6 +1,7 @@
 import getTrad from '../../../../utils/getTrad';
 
 const fields = {
+  // TODO check if used
   createComponent: {
     label: {
       id: getTrad('modalForm.attribute.text.type-selection'),

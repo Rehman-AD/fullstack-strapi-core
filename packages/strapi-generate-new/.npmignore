@@ -76,7 +76,6 @@ $RECYCLE.BIN/
 *#
 ssl
 .editorconfig
-.gitattributes
 .idea
 nbproject
 
@@ -90,9 +89,11 @@ lcov.info
 pids
 logs
 results
+build
 node_modules
 .node_history
 .snyk
+
 
 
 ############################
@@ -105,4 +106,3 @@ __tests__
 jest.config.js
 testApp
 coverage
-webpack.config.dev.js

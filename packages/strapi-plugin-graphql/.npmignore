@@ -95,6 +95,7 @@ node_modules
 .snyk
 
 
+
 ############################
 # Tests
 ############################
@@ -105,4 +106,3 @@ __tests__
 jest.config.js
 testApp
 coverage
-webpack.config.dev.js

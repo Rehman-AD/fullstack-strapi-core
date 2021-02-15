@@ -33,11 +33,11 @@ const BaseForm = ({ options, defaultOption }) => {
       <Col>
         <Inputs
           label={formatMessage({
-            id: getTrad('Settings.locales.modal.edit.locales.displayName'),
+            id: getTrad('Settings.locales.modal.locales.displayName'),
           })}
           name="displayName"
           description={formatMessage({
-            id: getTrad('Settings.locales.modal.edit.locales.displayName.description'),
+            id: getTrad('Settings.locales.modal.locales.displayName.description'),
           })}
           type="text"
           value={values.displayName}

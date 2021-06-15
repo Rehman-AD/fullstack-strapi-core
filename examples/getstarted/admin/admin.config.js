@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   webpack: (config, webpack) => {
     // Note: we provide webpack above so you should not `require` it

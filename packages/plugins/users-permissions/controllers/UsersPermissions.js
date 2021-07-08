@@ -1,12 +1,7 @@
 'use strict';
 
-/**
- * UsersPermissions.js controller
- *
- * @description: A set of functions called "actions" of the `users-permissions` plugin.
- */
-
 const _ = require('lodash');
+const { getService } = require('../utils');
 const { isValidEmailTemplate } = require('./validation/email-template');
 
 module.exports = {
@@ -21,9 +16,7 @@ module.exports = {
     }
 
     try {
-      await strapi.plugins['users-permissions'].services.userspermissions.createRole(
-        ctx.request.body
-      );
+      await getService('users-permissions').createRole(ctx.request.body);
 
       ctx.send({ ok: true });
     } catch (err) {
@@ -34,7 +27,9 @@ module.exports = {
 
   async deleteRole(ctx) {
     // Fetch public role.
-    const publicRole = await strapi.query('role', 'users-permissions').findOne({ type: 'public' });
+    const publicRole = await strapi
+      .query('plugins::users-permissions.role')
+      .findOne({ where: { type: 'public' } });
 
     const publicRoleID = publicRole.id;
 
@@ -50,10 +45,7 @@ module.exports = {
     }
 
     try {
-      await strapi.plugins['users-permissions'].services.userspermissions.deleteRole(
-        roleID,
-        publicRoleID
-      );
+      await getService('users-permissions').deleteRole(roleID, publicRoleID);
 
       ctx.send({ ok: true });
     } catch (err) {
@@ -64,9 +56,7 @@ module.exports = {
 
   async getPermissions(ctx) {
     try {
-      const permissions = await strapi.plugins[
-        'users-permissions'
-      ].services.userspermissions.getActions();
+      const permissions = await getService('users-permissions').getActions();
 
       ctx.send({ permissions });
     } catch (err) {
@@ -86,13 +76,8 @@ module.exports = {
   async getRole(ctx) {
     const { id } = ctx.params;
     const { lang } = ctx.query;
-    const plugins = await strapi.plugins['users-permissions'].services.userspermissions.getPlugins(
-      lang
-    );
-    const role = await strapi.plugins['users-permissions'].services.userspermissions.getRole(
-      id,
-      plugins
-    );
+    const plugins = await getService('users-permissions').getPlugins(lang);
+    const role = await getService('users-permissions').getRole(id, plugins);
 
     if (_.isEmpty(role)) {
       return ctx.badRequest(null, [{ messages: [{ id: `Role don't exist` }] }]);
@@ -103,7 +88,7 @@ module.exports = {
 
   async getRoles(ctx) {
     try {
-      const roles = await strapi.plugins['users-permissions'].services.userspermissions.getRoles();
+      const roles = await getService('users-permissions').getRoles();
 
       ctx.send({ roles });
     } catch (err) {
@@ -113,9 +98,7 @@ module.exports = {
 
   async getRoutes(ctx) {
     try {
-      const routes = await strapi.plugins[
-        'users-permissions'
-      ].services.userspermissions.getRoutes();
+      const routes = await getService('users-permissions').getRoutes();
 
       ctx.send({ routes });
     } catch (err) {
@@ -131,7 +114,7 @@ module.exports = {
   async searchUsers(ctx) {
     const { id } = ctx.params;
 
-    const data = await strapi.query('user', 'users-permissions').custom(searchQueries)({
+    const data = await strapi.query('plugins::users-permissions.user').custom(searchQueries)({
       id,
     });
 
@@ -146,10 +129,7 @@ module.exports = {
     }
 
     try {
-      await strapi.plugins['users-permissions'].services.userspermissions.updateRole(
-        roleID,
-        ctx.request.body
-      );
+      await getService('users-permissions').updateRole(roleID, ctx.request.body);
 
       ctx.send({ ok: true });
     } catch (err) {
@@ -208,7 +188,7 @@ module.exports = {
           key: 'advanced',
         })
         .get(),
-      roles: await strapi.plugins['users-permissions'].services.userspermissions.getRoles(),
+      roles: await getService('users-permissions').getRoles(),
     });
   },
 

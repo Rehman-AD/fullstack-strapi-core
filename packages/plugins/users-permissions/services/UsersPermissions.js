@@ -4,12 +4,6 @@ const _ = require('lodash');
 const request = require('request');
 const { getService } = require('../utils');
 
-/**
- * UsersPermissions.js service
- *
- * @description: A set of functions similar to controller's actions to avoid code duplication.
- */
-
 const DEFAULT_PERMISSIONS = [
   { action: 'admincallback', controller: 'auth', type: 'users-permissions', roleType: 'public' },
   { action: 'adminregister', controller: 'auth', type: 'users-permissions', roleType: 'public' },
@@ -45,19 +39,21 @@ module.exports = {
     }
 
     const role = await strapi
-      .query('role', 'users-permissions')
-      .create(_.omit(params, ['users', 'permissions']));
+      .query('plugins::users-permissions.role')
+      .create({ data: _.omit(params, ['users', 'permissions']) });
 
     const arrayOfPromises = Object.keys(params.permissions || {}).reduce((acc, type) => {
       Object.keys(params.permissions[type].controllers).forEach(controller => {
         Object.keys(params.permissions[type].controllers[controller]).forEach(action => {
           acc.push(
-            strapi.query('permission', 'users-permissions').create({
-              role: role.id,
-              type,
-              controller,
-              action: action.toLowerCase(),
-              ...params.permissions[type].controllers[controller][action],
+            strapi.query('plugins::users-permissions.permission').create({
+              data: {
+                role: role.id,
+                type,
+                controller,
+                action: action.toLowerCase(),
+                ...params.permissions[type].controllers[controller][action],
+              },
             })
           );
         });
@@ -69,12 +65,12 @@ module.exports = {
     // Use Content Manager business logic to handle relation.
     if (params.users && params.users.length > 0)
       arrayOfPromises.push(
-        strapi.query('role', 'users-permissions').update(
-          {
+        strapi.query('plugins::users-permissions.role').update({
+          where: {
             id: role.id,
           },
-          { users: params.users }
-        )
+          data: { users: params.users },
+        })
       );
 
     return await Promise.all(arrayOfPromises);
@@ -82,8 +78,8 @@ module.exports = {
 
   async deleteRole(roleID, publicRoleID) {
     const role = await strapi
-      .query('role', 'users-permissions')
-      .findOne({ id: roleID }, ['users', 'permissions']);
+      .query('plugins::users-permissions.role')
+      .findOne({ where: { id: roleID }, populate: ['users', 'permissions'] });
 
     if (!role) {
       throw new Error('Cannot find this role');
@@ -92,14 +88,14 @@ module.exports = {
     // Move users to guest role.
     const arrayOfPromises = role.users.reduce((acc, user) => {
       acc.push(
-        strapi.query('user', 'users-permissions').update(
-          {
+        strapi.query('plugins::users-permissions.user').update({
+          where: {
             id: user.id,
           },
-          {
+          data: {
             role: publicRoleID,
-          }
-        )
+          },
+        })
       );
 
       return acc;
@@ -108,14 +104,16 @@ module.exports = {
     // Remove permissions related to this role.
     role.permissions.forEach(permission => {
       arrayOfPromises.push(
-        strapi.query('permission', 'users-permissions').delete({
-          id: permission.id,
+        strapi.query('plugins::users-permissions.permission').delete({
+          where: { id: permission.id },
         })
       );
     });
 
     // Delete the role.
-    arrayOfPromises.push(strapi.query('role', 'users-permissions').delete({ id: roleID }));
+    arrayOfPromises.push(
+      strapi.query('plugins::users-permissions.role').delete({ where: { id: roleID } })
+    );
 
     return await Promise.all(arrayOfPromises);
   },
@@ -190,8 +188,8 @@ module.exports = {
 
   async getRole(roleID, plugins) {
     const role = await strapi
-      .query('role', 'users-permissions')
-      .findOne({ id: roleID }, ['permissions']);
+      .query('plugins::users-permissions.role')
+      .findOne({ where: { id: roleID }, populate: ['permissions'] });
 
     if (!role) {
       throw new Error('Cannot find this role');
@@ -219,12 +217,14 @@ module.exports = {
   },
 
   async getRoles() {
-    const roles = await strapi.query('role', 'users-permissions').find({ _sort: 'name' }, []);
+    const roles = await strapi
+      .query('plugins::users-permissions.role')
+      .findMany({ sort: ['name'] });
 
     for (let i = 0; i < roles.length; ++i) {
       roles[i].nb_users = await strapi
-        .query('user', 'users-permissions')
-        .count({ role: roles[i].id });
+        .query('plugins::users-permissions.user')
+        .count({ where: { role: { id: roles[i].id } } });
     }
 
     return roles;
@@ -370,12 +370,13 @@ module.exports = {
   async updateRole(roleID, body) {
     const [role, authenticated] = await Promise.all([
       this.getRole(roleID, []),
-      strapi.query('role', 'users-permissions').findOne({ type: 'authenticated' }, []),
+      strapi.query('plugins::users-permissions.role').findOne({ where: { type: 'authenticated' } }),
     ]);
 
-    await strapi
-      .query('role', 'users-permissions')
-      .update({ id: roleID }, _.pick(body, ['name', 'description']));
+    await strapi.query('plugins::users-permissions.role').update({
+      where: { id: roleID },
+      data: _.pick(body, ['name', 'description']),
+    });
 
     await Promise.all(
       Object.keys(body.permissions || {}).reduce((acc, type) => {
@@ -390,15 +391,15 @@ module.exports = {
 
             if (!_.isEqual(bodyAction, currentAction)) {
               acc.push(
-                strapi.query('permission', 'users-permissions').update(
-                  {
+                strapi.query('plugins::users-permissions.permission').update({
+                  where: {
                     role: roleID,
                     type,
                     controller,
                     action: action.toLowerCase(),
                   },
-                  bodyAction
-                )
+                  data: bodyAction,
+                })
               );
             }
           });
@@ -417,7 +418,9 @@ module.exports = {
   },
 
   async updateUserRole(user, role) {
-    return strapi.query('user', 'users-permissions').update({ id: user.id }, { role });
+    return strapi
+      .query('plugins::users-permissions.user')
+      .update({ where: { id: user.id }, data: { role } });
   },
 
   template(layout, data) {

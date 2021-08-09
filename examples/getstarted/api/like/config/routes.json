@@ -2,40 +2,40 @@
   "routes": [
     {
       "method": "GET",
-      "path": "/kitchensinks",
-      "handler": "kitchensink.find",
+      "path": "/likes",
+      "handler": "Like.find",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/kitchensinks/:id",
-      "handler": "kitchensink.findOne",
+      "path": "/likes/:id",
+      "handler": "Like.findOne",
       "config": {
         "policies": []
       }
     },
     {
       "method": "POST",
-      "path": "/kitchensinks",
-      "handler": "kitchensink.create",
+      "path": "/likes",
+      "handler": "Like.create",
       "config": {
         "policies": []
       }
     },
     {
       "method": "PUT",
-      "path": "/kitchensinks/:id",
-      "handler": "kitchensink.update",
+      "path": "/likes/:id",
+      "handler": "Like.update",
       "config": {
         "policies": []
       }
     },
     {
       "method": "DELETE",
-      "path": "/kitchensinks/:id",
-      "handler": "kitchensink.delete",
+      "path": "/likes/:id",
+      "handler": "Like.delete",
       "config": {
         "policies": []
       }

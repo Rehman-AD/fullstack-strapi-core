@@ -7,7 +7,7 @@ module.exports = {
       path: '/addresses',
       handler: 'address.find',
       config: {
-        policies: [],
+        policies: ['address'],
       },
     },
     {

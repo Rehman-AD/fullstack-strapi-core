@@ -10,7 +10,7 @@ import { ToggleInput } from '@strapi/parts/ToggleInput';
 import { TextInput } from '@strapi/parts/TextInput';
 import PropTypes from 'prop-types';
 
-const GenericInput = ({
+const Input = ({
   description,
   disabled,
   intlLabel,
@@ -18,13 +18,10 @@ const GenericInput = ({
   name,
   onChange,
   placeholder,
-  providerToEditName,
   type,
   value,
 }) => {
   const { formatMessage } = useIntl();
-  const inputValue =
-    name === 'noName' ? `${strapi.backendURL}/connect/${providerToEditName}/callback` : value;
 
   const label = formatMessage(
     { id: intlLabel.id, defaultMessage: intlLabel.defaultMessage },
@@ -80,12 +77,12 @@ const GenericInput = ({
       onChange={onChange}
       placeholder={formattedPlaceholder}
       type={type}
-      value={inputValue}
+      value={value}
     />
   );
 };
 
-GenericInput.defaultProps = {
+Input.defaultProps = {
   description: null,
   disabled: false,
   error: '',
@@ -93,7 +90,7 @@ GenericInput.defaultProps = {
   value: '',
 };
 
-GenericInput.propTypes = {
+Input.propTypes = {
   description: PropTypes.shape({
     id: PropTypes.string.isRequired,
     defaultMessage: PropTypes.string.isRequired,
@@ -113,9 +110,8 @@ GenericInput.propTypes = {
     defaultMessage: PropTypes.string.isRequired,
     values: PropTypes.object,
   }),
-  providerToEditName: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 };
 
-export default GenericInput;
+export default Input;

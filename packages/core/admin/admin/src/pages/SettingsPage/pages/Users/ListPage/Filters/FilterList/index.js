@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useQueryParams } from '@strapi/helper-plugin';
 import AttributeTag from './AttributeTag';
 
-const FilterList = ({ availableFilters }) => {
+const FilterList = ({ filtersSchema }) => {
   const [{ query }, setQuery] = useQueryParams();
 
   const handleClick = filter => {
@@ -21,7 +21,7 @@ const FilterList = ({ availableFilters }) => {
   return (
     query.filters?.$and.map((filter, i) => {
       const attributeName = Object.keys(filter)[0];
-      const attribute = availableFilters.find(({ name }) => name === attributeName);
+      const attribute = filtersSchema.find(({ name }) => name === attributeName);
 
       if (attribute.fieldSchema.type === 'relation') {
         const relationTargetAttribute = attribute.fieldSchema.mainField.name;
@@ -62,11 +62,11 @@ const FilterList = ({ availableFilters }) => {
 };
 
 FilterList.defaultProps = {
-  availableFilters: [],
+  filtersSchema: [],
 };
 
 FilterList.propTypes = {
-  availableFilters: PropTypes.arrayOf(
+  filtersSchema: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
       metadatas: PropTypes.shape({ label: PropTypes.string }),

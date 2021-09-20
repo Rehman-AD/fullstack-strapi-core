@@ -41,7 +41,8 @@ export const ImageAssetCard = ({ name, extension, height, width, thumbnail }) =>
         <CardContent>
           <CardTitle as="h2">{name}</CardTitle>
           <CardSubtitle>
-            <Extension>{extension}</Extension> - {height}✕{width}
+            <Extension>{extension}</Extension>
+            {height && width && `- ${height}✕${width}`}
           </CardSubtitle>
         </CardContent>
         <CardBadge>
@@ -52,10 +53,15 @@ export const ImageAssetCard = ({ name, extension, height, width, thumbnail }) =>
   );
 };
 
+ImageAssetCard.defaultProps = {
+  height: undefined,
+  width: undefined,
+};
+
 ImageAssetCard.propTypes = {
   extension: PropTypes.string.isRequired,
-  height: PropTypes.number.isRequired,
+  height: PropTypes.number,
   name: PropTypes.string.isRequired,
-  width: PropTypes.number.isRequired,
+  width: PropTypes.number,
   thumbnail: PropTypes.string.isRequired,
 };

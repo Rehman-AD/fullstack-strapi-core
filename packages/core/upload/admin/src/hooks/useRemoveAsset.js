@@ -1,16 +1,6 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { useNotification } from '@strapi/helper-plugin';
-import { axiosInstance } from '../utils';
-
-const removeAssetRequest = assetId => {
-  const endpoint = `/upload/files/${assetId}`;
-
-  return axiosInstance({
-    method: 'delete',
-    url: endpoint,
-    headers: {},
-  });
-};
+import { removeAssetRequest } from '../utils/removeAssetQuery';
 
 export const useRemoveAsset = onSuccess => {
   const toggleNotification = useNotification();

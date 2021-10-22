@@ -3,7 +3,7 @@ const testData = {
     uid: 'api::test.test',
     apiID: 'test',
     attributes: {
-      created_at: { type: 'timestamp' },
+      createdAt: { type: 'timestamp' },
       dz: { type: 'dynamiczone', components: ['compos.test-compo', 'compos.sub-compo'] },
       id: { type: 'integer' },
       name: { type: 'string' },
@@ -14,7 +14,7 @@ const testData = {
       },
       password: { type: 'password' },
       repeatable: { type: 'component', repeatable: true, component: 'compos.test-compo' },
-      updated_at: { type: 'timestamp' },
+      updatedAt: { type: 'timestamp' },
     },
   },
   components: {
@@ -48,7 +48,7 @@ const testData = {
     },
   },
   modifiedData: {
-    created_at: '2020-04-28T13:22:13.033Z',
+    createdAt: '2020-04-28T13:22:13.033Z',
     dz: [
       { __component: 'compos.sub-compo', id: 7, name: 'name', password: 'password' },
       {
@@ -106,10 +106,10 @@ const testData = {
         subcomponotrepeatable: null,
       },
     ],
-    updated_at: '2020-04-28T13:22:13.033Z',
+    updatedAt: '2020-04-28T13:22:13.033Z',
   },
   expectedModifiedData: {
-    created_at: '2020-04-28T13:22:13.033Z',
+    createdAt: '2020-04-28T13:22:13.033Z',
     dz: [
       { __component: 'compos.sub-compo', id: 7, name: 'name' },
       {
@@ -140,11 +140,7 @@ const testData = {
       id: 1,
       name: 'name',
       subcomponotrepeatable: { id: 4, name: 'name' },
-      subrepeatable: [
-        { id: 1, name: 'name' },
-        { id: 2, name: 'name' },
-        { id: 3, name: 'name' },
-      ],
+      subrepeatable: [{ id: 1, name: 'name' }, { id: 2, name: 'name' }, { id: 3, name: 'name' }],
     },
     repeatable: [
       {
@@ -160,7 +156,7 @@ const testData = {
         subcomponotrepeatable: null,
       },
     ],
-    updated_at: '2020-04-28T13:22:13.033Z',
+    updatedAt: '2020-04-28T13:22:13.033Z',
   },
   expectedNoFieldsModifiedData: {
     dz: [

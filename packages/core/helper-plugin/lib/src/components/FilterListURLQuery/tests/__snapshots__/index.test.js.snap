@@ -82,11 +82,7 @@ exports[`<FilterListURLQuery /> renders and matches the snapshot 1`] = `
         <span
           class="c4 c5"
         >
-          Boolean
-           
-          is
-           
-          true
+          Boolean is true
         </span>
         <div
           class="c6"
@@ -123,11 +119,7 @@ exports[`<FilterListURLQuery /> renders and matches the snapshot 1`] = `
         <span
           class="c4 c5"
         >
-          Date
-           
-          is not
-           
-          Wednesday, September 1, 2021
+          Date is not Wednesday, September 1, 2021
         </span>
         <div
           class="c6"
@@ -164,9 +156,7 @@ exports[`<FilterListURLQuery /> renders and matches the snapshot 1`] = `
         <span
           class="c4 c5"
         >
-          city
-           
-          is null
+          city is null 
         </span>
         <div
           class="c6"
@@ -203,9 +193,7 @@ exports[`<FilterListURLQuery /> renders and matches the snapshot 1`] = `
         <span
           class="c4 c5"
         >
-          country
-           
-          is not null
+          country is not null 
         </span>
         <div
           class="c6"
@@ -242,11 +230,7 @@ exports[`<FilterListURLQuery /> renders and matches the snapshot 1`] = `
         <span
           class="c4 c5"
         >
-          time
-           
-          contains (case sensitive)
-           
-          12:45 AM
+          time contains (case sensitive) 12:45 AM
         </span>
         <div
           class="c6"
@@ -283,11 +267,7 @@ exports[`<FilterListURLQuery /> renders and matches the snapshot 1`] = `
         <span
           class="c4 c5"
         >
-          many to one
-           
-          does not contain (case sensitive)
-           
-          test
+          many to one does not contain (case sensitive) test
         </span>
         <div
           class="c6"
@@ -324,11 +304,7 @@ exports[`<FilterListURLQuery /> renders and matches the snapshot 1`] = `
         <span
           class="c4 c5"
         >
-          many to one
-           
-          is
-           
-          test
+          many to one is test
         </span>
         <div
           class="c6"
@@ -365,11 +341,7 @@ exports[`<FilterListURLQuery /> renders and matches the snapshot 1`] = `
         <span
           class="c4 c5"
         >
-          city
-           
-          starts with
-           
-          paris
+          city starts with paris
         </span>
         <div
           class="c6"
@@ -406,11 +378,7 @@ exports[`<FilterListURLQuery /> renders and matches the snapshot 1`] = `
         <span
           class="c4 c5"
         >
-          country
-           
-          ends with
-           
-          france
+          country ends with france
         </span>
         <div
           class="c6"
@@ -447,11 +415,7 @@ exports[`<FilterListURLQuery /> renders and matches the snapshot 1`] = `
         <span
           class="c4 c5"
         >
-          number
-           
-          is greater than
-           
-          2
+          number is greater than 2
         </span>
         <div
           class="c6"
@@ -488,11 +452,7 @@ exports[`<FilterListURLQuery /> renders and matches the snapshot 1`] = `
         <span
           class="c4 c5"
         >
-          Float
-           
-          is greater than or equal to
-           
-          1
+          Float is greater than or equal to 1
         </span>
         <div
           class="c6"
@@ -529,11 +489,7 @@ exports[`<FilterListURLQuery /> renders and matches the snapshot 1`] = `
         <span
           class="c4 c5"
         >
-          Float
-           
-          is lower than or equal to
-           
-          3
+          Float is lower than or equal to 3
         </span>
         <div
           class="c6"
@@ -570,11 +526,7 @@ exports[`<FilterListURLQuery /> renders and matches the snapshot 1`] = `
         <span
           class="c4 c5"
         >
-          Float
-           
-          is lower than
-           
-          4
+          Float is lower than 4
         </span>
         <div
           class="c6"

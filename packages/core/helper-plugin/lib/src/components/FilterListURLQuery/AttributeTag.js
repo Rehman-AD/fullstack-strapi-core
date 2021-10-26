@@ -42,21 +42,14 @@ const AttributeTag = ({ attribute, filter, onClick, operator, value }) => {
     formattedValue = formatNumber(value);
   }
 
+  const content = `${attribute.metadatas.label || attribute.name} ${formatMessage({
+    id: `components.FilterOptions.FILTER_TYPES.${operator}`,
+    defaultMessage: operator,
+  })} ${operator !== '$null' && operator !== '$notNull' ? formattedValue : ''}`;
+
   return (
     <Box padding={1} onClick={handleClick}>
-      <Tag icon={<Close />}>
-        {attribute.metadatas.label || attribute.name}&nbsp;
-        {formatMessage({
-          id: `components.FilterOptions.FILTER_TYPES.${operator}`,
-          defaultMessage: operator,
-        })}
-        {operator !== '$null' && operator !== '$notNull' && (
-          <>
-            &nbsp;
-            {formattedValue}
-          </>
-        )}
-      </Tag>
+      <Tag icon={<Close />}>{content}</Tag>
     </Box>
   );
 };

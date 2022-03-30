@@ -37,6 +37,5 @@ const setPathAndUID = async folder => {
 };
 
 module.exports = {
-  generateUID,
   setPathAndUID,
 };

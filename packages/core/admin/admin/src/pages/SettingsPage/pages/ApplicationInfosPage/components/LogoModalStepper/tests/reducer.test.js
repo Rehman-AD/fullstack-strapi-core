@@ -9,22 +9,6 @@ describe('ApplicationsInfosPage | LogoModalStepper | reducer', () => {
     });
   });
 
-  describe('GO_TO', () => {
-    it('should update current step', () => {
-      const state = { ...initialState };
-
-      const action = {
-        type: 'GO_TO',
-        to: 'pending',
-      };
-
-      const expected = { ...initialState, currentStep: action.to };
-      const actual = reducer(state, action);
-
-      expect(actual).toEqual(expected);
-    });
-  });
-
   describe('SET_LOCAL_IMAGE', () => {
     it('should update localImage', () => {
       const state = { ...initialState };

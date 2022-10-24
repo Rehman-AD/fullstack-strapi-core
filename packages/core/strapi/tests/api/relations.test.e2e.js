@@ -2,7 +2,7 @@
 
 const { createTestBuilder } = require('../../../../../test/helpers/builder');
 const { createStrapiInstance } = require('../../../../../test/helpers/strapi');
-const { createAuthRequest } = require('../../../../../test/helpers/request');
+const { createContentAPIRequest } = require('../../../../../test/helpers/request');
 const modelsUtils = require('../../../../../test/helpers/models');
 
 let strapi;
@@ -115,7 +115,7 @@ const shopModel = {
 const createEntry = async (pluralName, data, populate) => {
   const { body } = await rq({
     method: 'POST',
-    url: `/api/${pluralName}`,
+    url: `/${pluralName}`,
     body: { data },
     qs: { populate },
   });
@@ -125,7 +125,7 @@ const createEntry = async (pluralName, data, populate) => {
 const updateEntry = async (pluralName, id, data, populate) => {
   const { body } = await rq({
     method: 'PUT',
-    url: `/api/${pluralName}/${id}`,
+    url: `/${pluralName}/${id}`,
     body: { data },
     qs: { populate },
   });
@@ -141,7 +141,7 @@ describe('Relations', () => {
     await modelsUtils.modifyComponent(compo(true));
 
     strapi = await createStrapiInstance();
-    rq = await createAuthRequest({ strapi });
+    rq = await createContentAPIRequest({ strapi });
 
     const createdProduct1 = await createEntry('products', { name: 'Skate' });
     const createdProduct2 = await createEntry('products', { name: 'Candle' });

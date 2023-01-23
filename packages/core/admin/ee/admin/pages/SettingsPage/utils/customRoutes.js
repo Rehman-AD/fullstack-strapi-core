@@ -1,6 +1,6 @@
 const routes = [];
 
-if (strapi.features.isEnabled(strapi.features.SSO)) {
+if (window.strapi.features.isEnabled(strapi.features.SSO)) {
   routes.push({
     async Component() {
       const component = await import(
@@ -10,6 +10,20 @@ if (strapi.features.isEnabled(strapi.features.SSO)) {
       return component;
     },
     to: '/settings/single-sign-on',
+    exact: true,
+  });
+}
+
+if (window.strapi.isEE) {
+  routes.push({
+    async Component() {
+      const component = await import(
+        /* webpackChunkName: "review-workflows-settings" */ '../pages/ReviewWorkflows'
+      );
+
+      return component;
+    },
+    to: '/settings/review-workflows',
     exact: true,
   });
 }

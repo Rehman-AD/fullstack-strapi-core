@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { useLocation } from 'react-router';
 import { useNotification } from '@strapi/helper-plugin';
-import { useLicenseLimitInfos } from '../useLicenseLimitInfos';
+import useLicenseLimits from '../useLicenseLimits';
 
 const STORAGE_KEY_PREFIX = 'strapi-notification-seat-limit-disabled';
 
@@ -17,7 +17,7 @@ const BILLING_SELF_HOSTED_URL =
 
 const useLicenseLimitNotification = () => {
   const { formatMessage } = useIntl();
-  let { license } = useLicenseLimitInfos();
+  let { license } = useLicenseLimits();
   const toggleNotification = useNotification();
   const { pathname } = useLocation();
 

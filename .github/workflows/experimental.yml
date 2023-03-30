@@ -2,6 +2,10 @@ name: 'Experimental Releases'
 
 on:
   workflow_dispatch:
+    inputs:
+      dist-tag:
+        description: 'The tag you want to remove from NPM'
+        default: 'experimental'
 
 permissions:
   contents: read # to fetch code (actions/checkout)
@@ -22,4 +26,4 @@ jobs:
       - run: ./scripts/pre-publish.sh --yes
         env:
           VERSION: '0.0.0-experimental.${{ github.sha }}'
-          DIST_TAG: experimental
+          DIST_TAG: ${{ github.event.inputs.dist-tag }}

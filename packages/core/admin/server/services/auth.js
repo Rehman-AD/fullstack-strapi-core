@@ -60,8 +60,7 @@ const checkCredentials = async ({ email, password }) => {
 const forgotPassword = async ({ email } = {}) => {
   const user = await strapi.query('admin::user').findOne({ where: { email, isActive: true } });
 
-  if (!user || (await isSsoLocked(user))) {
-    // TODO: this needs to be removed and overidden in /ee/
+  if (!user) {
     return;
   }
 
@@ -104,8 +103,7 @@ const resetPassword = async ({ resetPasswordToken, password } = {}) => {
     .query('admin::user')
     .findOne({ where: { resetPasswordToken, isActive: true } });
 
-  if (!matchingUser || isSsoLocked(matchingUser)) {
-    // TODO: this needs to be removed and overidden in /ee/
+  if (!matchingUser) {
     throw new ApplicationError();
   }
 

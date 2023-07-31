@@ -7,9 +7,9 @@ import { useIntl } from 'react-intl';
 import { useAdminUsers } from '../../../../hooks/useAdminUsers';
 import { getDisplayName } from '../../../utils';
 
-const AdminUsersFilter = ({ value, onChange }) => {
+export const AdminUsersFilter = ({ value, onChange }) => {
   const { formatMessage } = useIntl();
-  const { users, isLoading } = useAdminUsers({});
+  const { users, isLoading } = useAdminUsers();
 
   return (
     <Combobox
@@ -40,5 +40,3 @@ AdminUsersFilter.propTypes = {
 AdminUsersFilter.defaultProps = {
   value: '',
 };
-
-export { AdminUsersFilter };

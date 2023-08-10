@@ -19,7 +19,7 @@ const {
   cloneDeep,
 } = require('lodash/fp');
 
-const { contentTypes, traverseEntity, sanitize, pipeAsync, traverse } = require('@strapi/utils');
+const { contentTypes, traverseEntity, sanitize, pipeAsync } = require('@strapi/utils');
 const { removePassword } = require('@strapi/utils').sanitize.visitors;
 const { ADMIN_USER_ALLOWED_FIELDS } = require('../../../domain/user');
 
@@ -45,7 +45,10 @@ const STATIC_FIELDS = [ID_ATTRIBUTE];
 module.exports = ({ action, ability, model }) => {
   const schema = strapi.getModel(model);
 
+  const { sanitizePasswords } = sanitize.sanitizers;
   const { allowedFields } = sanitize.visitors;
+  const { traverseQueryFilters, traverseQuerySort, traverseQueryPopulate, traverseQueryFields } =
+    sanitize.traversals;
 
   const createSanitizeQuery = (options = {}) => {
     const { fields } = options;
@@ -54,10 +57,10 @@ module.exports = ({ action, ability, model }) => {
     const permittedFields = fields.shouldIncludeAll ? null : getQueryFields(fields.permitted);
 
     const sanitizeFilters = pipeAsync(
-      traverse.traverseQueryFilters(allowedFields(permittedFields), { schema }),
-      traverse.traverseQueryFilters(omitDisallowedAdminUserFields, { schema }),
-      traverse.traverseQueryFilters(removePassword, { schema }),
-      traverse.traverseQueryFilters(
+      traverseQueryFilters(allowedFields(permittedFields), { schema }),
+      traverseQueryFilters(omitDisallowedAdminUserFields, { schema }),
+      traverseQueryFilters(removePassword, { schema }),
+      traverseQueryFilters(
         ({ key, value }, { remove }) => {
           if (isObject(value) && isEmpty(value)) {
             remove(key);
@@ -68,10 +71,10 @@ module.exports = ({ action, ability, model }) => {
     );
 
     const sanitizeSort = pipeAsync(
-      traverse.traverseQuerySort(allowedFields(permittedFields), { schema }),
-      traverse.traverseQuerySort(omitDisallowedAdminUserFields, { schema }),
-      traverse.traverseQuerySort(removePassword, { schema }),
-      traverse.traverseQuerySort(
+      traverseQuerySort(allowedFields(permittedFields), { schema }),
+      traverseQuerySort(omitDisallowedAdminUserFields, { schema }),
+      traverseQuerySort(removePassword, { schema }),
+      traverseQuerySort(
         ({ key, attribute, value }, { remove }) => {
           if (!isScalarAttribute(attribute) && isEmpty(value)) {
             remove(key);
@@ -82,14 +85,14 @@ module.exports = ({ action, ability, model }) => {
     );
 
     const sanitizePopulate = pipeAsync(
-      traverse.traverseQueryPopulate(allowedFields(permittedFields), { schema }),
-      traverse.traverseQueryPopulate(omitDisallowedAdminUserFields, { schema }),
-      traverse.traverseQueryPopulate(removePassword, { schema })
+      traverseQueryPopulate(allowedFields(permittedFields), { schema }),
+      traverseQueryPopulate(omitDisallowedAdminUserFields, { schema }),
+      traverseQueryPopulate(removePassword, { schema })
     );
 
     const sanitizeFields = pipeAsync(
-      traverse.traverseQueryFields(allowedFields(permittedFields), { schema }),
-      traverse.traverseQueryFields(removePassword, { schema })
+      traverseQueryFields(allowedFields(permittedFields), { schema }),
+      traverseQueryFields(removePassword, { schema })
     );
 
     return async (query) => {
@@ -128,7 +131,7 @@ module.exports = ({ action, ability, model }) => {
       // Remove not allowed fields (RBAC)
       traverseEntity(allowedFields(permittedFields), { schema }),
       // Remove all fields of type 'password'
-      sanitize.sanitizers.sanitizePasswords(schema)
+      sanitizePasswords(schema)
     );
   };
 
@@ -270,5 +273,6 @@ module.exports = ({ action, ability, model }) => {
     sanitizeOutput: wrapSanitize(createSanitizeOutput),
     sanitizeInput: wrapSanitize(createSanitizeInput),
     sanitizeQuery: wrapSanitize(createSanitizeQuery),
+    validateQuery: wrapSanitize(createSanitizeQuery),
   };
 };

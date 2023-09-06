@@ -130,7 +130,7 @@ const getLocalScript =
   (...args: unknown[]) => {
     assertCwdContainsStrapiProject(name);
 
-    const cmdPath = resolveCwd.silent(`@strapi/strapi/lib/commands/actions/${name}/action`);
+    const cmdPath = resolveCwd.silent(`@strapi/strapi/dist/commands/actions/${name}/action`);
     if (!cmdPath) {
       console.log(
         `Error loading the local ${yellow(
@@ -140,8 +140,10 @@ const getLocalScript =
       process.exit(1);
     }
 
-    import(cmdPath)
-      .then((script) => {
+    const script = require(cmdPath).default;
+
+    Promise.resolve()
+      .then(() => {
         return script(...args);
       })
       .catch((error) => {

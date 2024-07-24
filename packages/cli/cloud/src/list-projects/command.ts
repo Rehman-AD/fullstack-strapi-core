@@ -12,7 +12,7 @@ const command: StrapiCloudCommand = ({ command, ctx }) => {
     .description('List Strapi Cloud projects')
     .option('-d, --debug', 'Enable debugging mode with verbose logs')
     .option('-s, --silent', "Don't log anything")
-    .action(() => runAction('listProjects', action)(ctx));
+    .action(() => runAction('projects', action)(ctx));
 };
 
 export default command;

@@ -5,7 +5,9 @@ const importData = async () => {
   const filePath = args[0];
 
   if (!filePath) {
-    console.error('Please provide the name of the file you want to import from tests/e2e/data');
+    console.error(
+      'Please provide the name of the file you want to import from tests/e2e/browser/data'
+    );
     process.exit(1);
   }
 

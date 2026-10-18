@@ -9474,7 +9474,7 @@ __metadata:
     execa: "npm:5.1.1"
     fast-deep-equal: "npm:3.1.3"
     formik: "npm:2.4.9"
-    fractional-indexing: "npm:3.2.0"
+    fractional-indexing: "npm:3.4.0"
     fs-extra: "npm:11.3.4"
     highlight.js: "npm:^10.4.1"
     immer: "npm:9.0.21"
@@ -9604,7 +9604,7 @@ __metadata:
     codemirror5: "npm:codemirror@^5.65.11"
     date-fns: "npm:2.30.0"
     dompurify: "npm:3.4.13"
-    fractional-indexing: "npm:3.2.0"
+    fractional-indexing: "npm:3.4.0"
     highlight.js: "npm:^10.4.1"
     immer: "npm:9.0.21"
     jest: "npm:29.6.0"
@@ -10522,7 +10522,7 @@ __metadata:
     "@types/jest": "npm:29.5.2"
     "@types/node": "npm:20.19.41"
     date-fns: "npm:2.30.0"
-    fractional-indexing: "npm:3.2.0"
+    fractional-indexing: "npm:3.4.0"
     jest: "npm:29.6.0"
     koa: "npm:2.16.4"
     koa-body: "npm:6.0.1"
@@ -19054,10 +19054,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fractional-indexing@npm:3.2.0":
-  version: 3.2.0
-  resolution: "fractional-indexing@npm:3.2.0"
-  checksum: 10c0/d4d477c2ba369346ef0f03a4776bd78a3426e2778c23f8fd9dd3f51f9a851280bfc412c9bd970de55f1d21b831899f4c7f75f7fb72ae7f92b189eee962564005
+"fractional-indexing@npm:3.4.0":
+  version: 3.4.0
+  resolution: "fractional-indexing@npm:3.4.0"
+  checksum: 10c0/43c6fd9babc4a387da60a1fc1f3fbdb5a61f6237b8e93150772e269e58e053571b2d5e073dfae89c4facaa28edaa16548f74b6d25ae24f6c4f50ba7ba6099f4c
   languageName: node
   linkType: hard
 

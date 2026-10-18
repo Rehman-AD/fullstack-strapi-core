@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@strapi/utils": "5.56.0",
-    "fs-extra": "11.3.4"
+    "fs-extra": "11.4.0"
   },
   "devDependencies": {
     "@strapi/types": "5.56.0",
